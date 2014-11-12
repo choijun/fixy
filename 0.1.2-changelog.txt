@@ -1,0 +1,24 @@
+Fixy Development Build 0.1.1
+êêCreated: 10/7/14
+All Rights Reserved Matt Mitchell 2014
+
+Change Log:
+-------------------------------------------------
+
+CSS Styling
+	- Removed border, border-radius from text input fields making it inline with UI kit
+	- Styled city report card page
+		- Made slider full width and disabled from user input
+		- Styled headers and text 
+		- Decreased margin on header and sliders, making page fit neatly without scrolling
+	- Styled nearby reports page
+		- Removed left, right border from collapsible list
+		- Added header background grad for location, priority, status
+		- Vote up, vote down buttons width now 50%
+
+Javascript Functionality
+	- Outlined necessary functions and variables for the app
+	- Began implementing Apigee API into code
+	- Set up collections in Apigee framework
+	- Began coding moving map location when users click on report
+

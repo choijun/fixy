@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fixy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <link href="css/codiqa.ext.css" rel="stylesheet">
+  <link href="css/jquery.mobile.theme-1.3.1.css" rel="stylesheet">
+  <link href="css/fixy.css" rel="stylesheet">
+  <link href="css/jquery.mobile.structure-1.3.1.css" rel="stylesheet">
+
+  <script src="js/jquery-1.9.1.js"></script>
+  <script src="js/jquery.mobile-1.3.1.js"></script>
+  <script src="js/codiqa.ext.js"></script>
+  <script src="js/apigee.min.js"></script>
+  <script src="js/fixy.js"></script>
+
+</head>
+<body>
+  <div data-role="page" data-control-title="Submit Report" id="submit-report-page">
+      <div data-role="panel" id="panel2" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel2" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Submit Report
+          </h3>
+      </div>
+      <div data-role="content">
+          <a id="save-current-location" data-role="button" href="#submit-report-page" data-icon="star"
+          data-iconpos="left">
+              Save Current Location
+          </a>
+          <div id="submit-report-map" class="google-map" style="width: 288px; height: 100px; margin-left: auto; margin-right: auto">
+          </div>
+          <script type="text/javascript">
+                  window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'submit-report-map', {
+              ready: function(control) {
+  
+                  control.options = {
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                  };
+  
+                  control.el = document.getElementById(control._id);
+                  control.map = new google.maps.Map(control.el, control.options);
+  
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({
+                      'address': 'Dallas, TX'
+                  }, function(results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+  
+                          var marker = new google.maps.Marker({
+                              map: control.map,
+                              position: results[0].geometry.location
+                          });
+                          control.center = results[0].geometry.location;
+                          control.map.setCenter(control.center);
+                      }
+                  });
+  
+              }
+          });
+          </script>
+          <div id="submit-report-location" data-role="fieldcontain" data-controltype="radiobuttons">
+              <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                  <input id="use-current-location" name="submit-report-location-group" value="current-loc" type="radio">
+                  <label for="use-current-location" id="use-current-location-label">
+                      Current Location
+                  </label>
+                  <input id="use-saved-location" name="submit-report-location-group" value="saved-loc" type="radio">
+                  <label for="use-saved-location" id="use-saved-location-label">
+                      Saved Location
+                  </label>
+              </fieldset>
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="submit-report-title" placeholder="Title" value="" data-mini="true"
+              type="text">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="submit-report-description" placeholder="Description"
+              value="" data-mini="true" type="text">
+          </div>
+          <h3 id="priority-label">Priority</h3>
+          <div id="priority-field" data-role="fieldcontain" data-controltype="radiobuttons">
+              <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                  <input id="low-priority" name="priority-field-group" value="low-priority" type="radio">
+                  <label for="low-priority" id="low-priority-label">
+                      Low
+                  </label>
+                  <input id="medium-priority" name="priority-field-group" value="medium-priority" type="radio">
+                  <label for="medium-priority" id="medium-priority-label">
+                      Medium
+                  </label>
+                  <input id="high-priority" name="priority-field-group" value="high-priority" type="radio">
+                  <label for="high-priority" id="high-priority-label">
+                      High
+                  </label>
+              </fieldset>
+          </div>
+          <div data-role="fieldcontain" data-controltype="camerainput">
+              <input name="" id="submit-report-image" accept="image/*" capture="camera"
+              type="file">
+          </div>
+          <input id="submit-report-submit" value="Submit" type="submit">
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="City Report Card" id="city-report-page">
+      <div data-role="panel" id="panel6" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel5" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel6" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              City Report Card
+          </h3>
+      </div>
+      <div id="city-report-card" data-role="content">
+          <h2 id="city-name">
+              Richardson, Texas
+          </h2>
+          <div data-role="fieldcontain" data-controltype="searchinput">
+              <input name="" id="city-search" placeholder="Search for city" value=""
+              type="search">
+          </div>
+          <h4>
+              Completed Reports Percentage
+          </h4>
+          <div class="report-card-slider" data-role="fieldcontain" data-controltype="slider">
+              <input id="slider3" value="72" min="0" max="100" data-highlight="true"
+              data-mini="true" data-type="range">
+          </div>
+          <p><span id="percent-complete-city-name">Richardson</span> has completed <strong><span id="percent-complete-percent">72</span>%</strong> of all issues reported to them.</p>
+          <hr style="height:1px; background-color:#ccc; border:0; margin-top:6px; margin-bottom:6px;">
+          <h4>
+              Percentile Compared to Others
+          </h4>
+          <div class="report-card-slider" data-role="fieldcontain" data-controltype="slider">
+              <input id="slider4" value="92" min="0" max="100" data-highlight="true"
+              data-mini="true" data-type="range">
+          </div>
+          <p><span id="percentile-city-name">Richardson</span> is in the <strong>top <span id="percentile-percent">92</span>%</strong> of cities based on completion percentage.</p>
+          
+          <hr style="height:1px; background-color:#ccc; border:0; margin-top:6px; margin-bottom:6px;">
+          <div class="ui-grid-a">
+              <div class="ui-block-a">
+                  <h5>
+                      Avg. Completion Time
+                  </h5>
+                  <h1 class="report-card-number positive-score">
+                      <span id="avg-completion-time">6</span> Days
+                  </h1>
+              </div>
+              <div class="ui-block-b">
+                  <h5>
+                      Total Completed
+                  </h5>
+                  <h1 class="report-card-number negative-score">
+                      <span id="total-completed">745</span>
+                  </h1>
+              </div>
+          </div>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Nearby You" id="page4">
+      <div data-role="panel" id="panel4" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false" data-filter="true">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel3" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel4" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Nearby You
+          </h3>
+          <div id="nearby-you-map" class="google-map" style="width: 288px; height: 125px; margin-left: auto; margin-right: auto">
+          </div>
+          <script type="text/javascript">
+                  window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'nearby-you-map', {
+              ready: function(control) {
+  
+                  control.options = {
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                  };
+  
+                  control.el = document.getElementById(control._id);
+                  control.map = new google.maps.Map(control.el, control.options);
+  
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({
+                      'address': 'Dallas, TX'
+                  }, function(results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+  
+                          var marker = new google.maps.Marker({
+                              map: control.map,
+                              position: results[0].geometry.location
+                          });
+                          control.center = results[0].geometry.location;
+                          control.map.setCenter(control.center);
+                      }
+                  });
+              }
+          });
+          </script>
+      </div>
+      <div data-role="content">
+          <div id="nearby-you-list" data-role="collapsible-set">
+
+              <!-- NEARBY YOU LIST HERE -->
+
+
+              <div class="report-header" data-role="collapsible">
+                  <h3>
+                      Pothole on Elm St
+                  </h3>
+                  <div data-controltype="htmlblock">
+                      <p>
+                          There is an overgrown property at 927 Wayward Drive.
+                      </p>
+                      <ul class="report-details">
+                          <li>
+                              <p>Location: 927 Wayward Drive</p>
+                          </li>
+                      </ul>
+                      <div class="report-grid">
+                          <h2>Priority</h2>
+                          <p></p>
+                      </div>
+                      <div class="report-grid">
+                          <h2>Status</h2>
+                          <p></p>
+                      </div>
+                  </div>
+                  <div data-role="fieldcontain" data-controltype="radiobuttons">
+                      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                          <input id="radio9" name="" value="radio1" type="radio">
+                          <label for="radio9">
+                              Vote Up
+                          </label>
+                          <input id="radio10" name="" value="radio6" type="radio">
+                          <label for="radio10">
+                              Vote Down
+                          </label>
+                      </fieldset>
+                  </div>
+              </div>
+              <div class="report-header" data-role="collapsible">
+                  <h3>
+                      Overgrown Property
+                  </h3>
+                  <div data-controltype="htmlblock">
+                      <p>
+                          There is an overgrown property at 927 Wayward Drive.
+                      </p>
+                      <ul class="report-details">
+                          <li>
+                              <strong>
+                                  Location
+                              </strong>
+                              <p>927 Wayward Drive</p>
+                          </li>
+                          <li>
+                              <strong>
+                                  Priority
+                              </strong>
+                              <p>Low</p>
+                          </li>
+                          <li>
+                              <strong>
+                                  Status
+                              </strong>
+                              <p>In Progress</p>
+                          </li>
+                      </ul>
+                  </div>
+                  <div data-role="fieldcontain" data-controltype="radiobuttons">
+                      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                          <input id="radio7" name="" value="radio1" type="radio">
+                          <label for="radio7">
+                              Vote Up
+                          </label>
+                          <input id="radio8" name="" value="radio6" type="radio">
+                          <label for="radio8">
+                              Vote Down
+                          </label>
+                      </fieldset>
+                  </div>
+              </div>
+              <div class="report-header" data-role="collapsible">
+                  <h3>
+                      Streetlight too long
+                  </h3>
+                  <div data-controltype="htmlblock">
+                      <p>
+                          There is an overgrown property at 927 Wayward Drive.
+                      </p>
+                      <ul class="report-details">
+                          <li>
+                              <strong>
+                                  Location:
+                              </strong>
+                              <p>927 Wayward Drive</p>
+                          </li>
+                          <li>
+                              <strong>
+                                  Priority:
+                              </strong>
+                              <p>Low</p>
+                          </li>
+                          <li>
+                              <strong>
+                                  Status:
+                              </strong>
+                              <p>In Progress</p>
+                          </li>
+                      </ul>
+                  </div>
+                  <div data-role="fieldcontain" data-controltype="radiobuttons">
+                      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                          <input id="radio4" name="" value="radio1" type="radio">
+                          <label for="radio4">
+                              Vote Up
+                          </label>
+                          <input id="radio6" name="" value="radio6" type="radio">
+                          <label for="radio6">
+                              Vote Down
+                          </label>
+                      </fieldset>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="About" id="page6">
+      <div data-role="panel" id="panel9" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel7" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel8" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel9" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              About
+          </h3>
+      </div>
+      <div data-role="content">
+          <div data-controltype="textblock">
+              <p style="text-align: justify;" data-mce-style="text-align: justify;">
+                  Fixy is a location-based issue sub-mission platform designed to be used
+                  both by city government and its citizens. It was created using jQuery mobile,
+                  PhoneGap, Codiqa, and a whole lot of coffee.&nbsp;
+              </p>
+          </div>
+          <a id="terms-of-service" data-role="button" href="#submit-report-page4">
+              Terms of Service
+          </a>
+          <a id="privacy-policy" data-role="button" href="#submit-report-city-report-page">
+              Privacy Policy
+          </a>
+          <a id="help-and-support" data-role="button" href="#page7">
+              Help &amp; Support
+          </a>
+          <div data-controltype="textblock">
+              <p style="text-align: center;">
+                  <span style="font-size: x-small;">
+                      Fixy © Matt Mitchell 2014
+                  </span>
+              </p>
+              <p style="text-align: center;">
+                  <span style="font-size: x-small;">
+                      All Rights Reserved.&nbsp;
+                  </span>
+              </p>
+          </div>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Terms of Service" id="submit-report-page4">
+      <div data-role="panel" id="panel47" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel44" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel45" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel46" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel47" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Terms of Service
+          </h3>
+      </div>
+      <div data-role="content">
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Privacy Policy" id="submit-report-city-report-page">
+      <div data-role="panel" id="panel52" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel48" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel49" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel50" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel51" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel52" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Privacy Policy
+          </h3>
+      </div>
+      <div data-role="content">
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Help" id="page7">
+      <div data-role="panel" id="panel13" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel10" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel11" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel12" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel13" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Help
+          </h3>
+      </div>
+      <div data-role="content">
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Saved Location" id="page9">
+      <div data-role="panel" id="panel23" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel19" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel20" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel21" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel22" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel23" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Saved Location
+          </h3>
+      </div>
+      <div data-role="content">
+          <div id="saved-location-map" class="google-map" style="width: 288px; height: 200px; margin-left: auto; margin-right: auto">
+          </div>
+          <script type="text/javascript">
+                  window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'saved-location-map', {
+              ready: function(control) {
+  
+                  control.options = {
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                  };
+  
+                  control.el = document.getElementById(control._id);
+                  control.map = new google.maps.Map(control.el, control.options);
+  
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({
+                      'address': '2908 Dartmouth Drive, Plano, TX'
+                  }, function(results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+  
+                          var marker = new google.maps.Marker({
+                              map: control.map,
+                              position: results[0].geometry.location
+                          });
+                          control.center = results[0].geometry.location;
+                          control.map.setCenter(control.center);
+                      }
+                  });
+  
+              }
+          });
+          </script>
+          <a id="change-saved-location" data-role="button" href="#page9">
+              Change Saved Location
+          </a>
+          <a id="clear-saved-location" data-role="button" href="#page9">
+              Clear Saved Location
+          </a>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Account" id="page10">
+      <div data-role="panel" id="panel29" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel24" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel25" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel26" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel27" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel28" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel29" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Account
+          </h3>
+      </div>
+      <div data-role="content">
+          <div class="ui-grid-a">
+              <div class="ui-block-a">
+                  <h4>
+                      Email Address
+                  </h4>
+              </div>
+              <div class="ui-block-b">
+                  <div data-controltype="textblock">
+                      <p>
+                          mmitchell413@gmail.com
+                          <br>
+                      </p>
+                  </div>
+              </div>
+              <div class="ui-block-a">
+                  <h4>
+                      Change Password
+                  </h4>
+              </div>
+              <div class="ui-block-b">
+                  <a data-role="button" href="#page10">
+                      Change
+                  </a>
+              </div>
+              <div class="ui-block-a">
+                  <h4>
+                      Account Type
+                  </h4>
+              </div>
+              <div class="ui-block-b">
+                  <div data-controltype="textblock">
+                      <p>
+                          Standard
+                      </p>
+                  </div>
+              </div>
+              <div class="ui-block-a">
+              </div>
+              <div class="ui-block-b">
+              </div>
+              <div class="ui-block-a">
+              </div>
+              <div class="ui-block-b">
+              </div>
+              <div class="ui-block-a">
+              </div>
+              <div class="ui-block-b">
+              </div>
+          </div>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Change Password" id="submit-report-page3">
+      <div data-role="panel" id="panel43" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel37" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel38" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel39" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel40" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel41" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel42" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel43" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Change Password
+          </h3>
+      </div>
+      <div data-role="content">
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="textinput5" placeholder="Previous Password" value=""
+              type="text">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="textinput6" placeholder="New Password" value="" type="text">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="textinput7" placeholder="Confirm New Password" value=""
+              type="text">
+          </div>
+          <input value="Submit" type="submit">
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="My Reports" id="page11">
+      <div data-role="panel" id="panel36" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel30" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel31" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel32" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel33" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel34" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel35" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel36" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              My Reports
+          </h3>
+          <div id="my-reports-map" class="google-map" style="width: 288px; height: 125px; margin-left: auto; margin-right: auto">
+          </div>
+          <script type="text/javascript">
+                  window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'my-reports-map', {
+              ready: function(control) {
+  
+                  control.options = {
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                  };
+  
+                  control.el = document.getElementById(control._id);
+                  control.map = new google.maps.Map(control.el, control.options);
+  
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({
+                      'address': 'Madison, WI'
+                  }, function(results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+  
+                          var marker = new google.maps.Marker({
+                              map: control.map,
+                              position: results[0].geometry.location
+                          });
+                          control.center = results[0].geometry.location;
+                          control.map.setCenter(control.center);
+                      }
+                  });
+  
+              }
+          });
+          </script>
+      </div>
+      <div data-role="content">
+          <div id="my-reports-list" data-role="collapsible-set">
+              <div data-role="collapsible" data-collapsed="false">
+                  <h3>
+                      Section Header
+                  </h3>
+                  <p>Lorem Ipsum</p>
+              </div>
+              <div data-role="collapsible" data-collapsed="false">
+                  <h3>
+                      Section Header
+                  </h3>
+              </div>
+              <div data-role="collapsible" data-collapsed="false">
+                  <h3>
+                      Section Header
+                  </h3>
+              </div>
+              <div data-role="collapsible" data-collapsed="false">
+                  <h3>
+                      Section Header
+                  </h3>
+              </div>
+          </div>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Settings" id="page8">
+      <div data-role="panel" id="panel18" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#page9" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page10" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page8" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page11" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page7" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#page6" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel14" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel15" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel16" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-role="panel" id="panel17" data-position="right" data-display="reveal"
+      data-theme="a">
+          <ul data-role="listview" data-divider-theme="h" data-inset="false">
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Saved Location
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Account
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Settings
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      My Reports
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      Help
+                  </a>
+              </li>
+              <li data-theme="a">
+                  <a href="#submit-report-page" data-transition="slide">
+                      About
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <div data-theme="a" data-role="header" data-position="fixed">
+          <a data-controltype="panelbutton" data-role="button" href="#panel18" data-icon="bars"
+          data-iconpos="notext" class="ui-btn-right">
+          </a>
+          <a data-role="button" data-rel="back" href="#submit-report-page" data-icon="arrow-l"
+          data-iconpos="notext" class="ui-btn-left">
+          </a>
+          <h3>
+              Settings
+          </h3>
+      </div>
+      <div data-role="content">
+          <div class="ui-grid-a">
+              <div class="ui-block-a">
+                  <h5 class="align-left settings-label">
+                      Allow Location Services
+                  </h5>
+              </div>
+              <div class="ui-block-b">
+                  <div data-role="fieldcontain" data-controltype="toggleswitch">
+                      <select name="toggleswitch1" id="allow-location-services" data-theme=""
+                      data-role="slider">
+                          <option value="off">
+                              Off
+                          </option>
+                          <option value="on">
+                              On
+                          </option>
+                      </select>
+                  </div>
+              </div>
+              <div class="ui-block-a">
+                  <h5 class="align-left settings-label">
+                      Change Home City
+                  </h5>
+              </div>
+              <div class="ui-block-b">
+                  <a id="change-home-city" data-role="button" href="#page8">
+                      Change
+                  </a>
+              </div>
+              <div class="ui-block-a">
+                  <h5 class="align-left settings-label">
+                      Notifications
+                  </h5>
+              </div>
+              <div class="ui-block-b">
+                  <div data-role="fieldcontain" data-controltype="toggleswitch">
+                      <select name="toggleswitch2" id="notifications" data-theme="" data-role="slider">
+                          <option value="off">
+                              Off
+                          </option>
+                          <option value="on">
+                              On
+                          </option>
+                      </select>
+                  </div>
+              </div>
+              <div class="ui-block-a">
+                  <h5 class="align-left settings-label">
+                      Allow Location Services
+                  </h5>
+              </div>
+              <div class="ui-block-b">
+              </div>
+              <div class="ui-block-a">
+                  <h5 class="align-left settings-label">
+                      Allow Location Services
+                  </h5>
+              </div>
+              <div class="ui-block-b">
+              </div>
+              <div class="ui-block-a">
+                  <h5 class="align-left settings-label">
+                      Allow Location Services
+                  </h5>
+              </div>
+              <div class="ui-block-b">
+              </div>
+          </div>
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Login" id="page3">
+      <div data-role="content">
+          <div id="logo" style=" text-align:center" data-controltype="image">
+              <img style="width: 256px; height: 256px" src="http://mattmitchell.org/img/logo.png">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="login-username" placeholder="Username..." value=""
+              data-mini="true" type="text">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="login-password" placeholder="Password..." value=""
+              data-mini="true" type="password">
+          </div>
+          <input id="login-submit" value="Submit" type="submit">
+          <a class="center" href="#new-user-page">Don't have an account? Register here.</a>
+      </div>
+  </div>
+    <div data-role="page" data-control-title="New User" id="new-user-page">
+      <div data-role="content">
+          <div id="logo" style=" text-align:center" data-controltype="image">
+              <img style="width: 256px; height: 256px" src="http://mattmitchell.org/img/logo.png">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="register-username" placeholder="Username..." value=""
+              data-mini="true" type="text">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="register-email" placeholder="Email..." value=""
+              data-mini="true" type="text">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="register-password" placeholder="Password..." value=""
+              data-mini="true" type="password">
+          </div>
+          <div data-role="fieldcontain" data-controltype="textinput">
+              <input name="" id="register-password-repeat" placeholder="Repeat password..." value=""
+              data-mini="true" type="password">
+          </div>
+          <input id="new-user-submit" value="Submit" type="submit">
+      </div>
+  </div>
+  <div data-role="page" data-control-title="Home" id="page12">
+      <div data-role="content">
+      </div>
+      <div data-role="tabbar" data-iconpos="top" data-theme="a">
+          <ul>
+              <li>
+                  <a href="#page4" data-transition="flow" data-theme="" data-icon="home">
+                      Nearby
+                  </a>
+              </li>
+              <li>
+                  <a href="#city-report-page" data-transition="flow" data-theme="" data-icon="info">
+                      City
+                  </a>
+              </li>
+              <li>
+                  <a href="#submit-report-page" data-transition="flow" data-theme="" data-icon="edit">
+                      Report
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</body>
+</html>

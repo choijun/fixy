@@ -1,0 +1,28 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#	new file:   0.1.2-changelog.txt
+#	new file:   css/codiqa.ext.css
+#	new file:   css/fixy.css
+#	new file:   css/images/ajax-loader.gif
+#	new file:   css/images/icons-18-black.png
+#	new file:   css/images/icons-18-white.png
+#	new file:   css/images/icons-36-black.png
+#	new file:   css/images/icons-36-white.png
+#	new file:   css/jquery.mobile.structure-1.3.1.css
+#	new file:   css/jquery.mobile.theme-1.3.1.css
+#	new file:   fixy
+#	new file:   fixy.sublime-project
+#	new file:   fixy.sublime-workspace
+#	new file:   index.html
+#	new file:   js/apigee.js
+#	new file:   js/apigee.min.js
+#	new file:   js/codiqa.ext.js
+#	new file:   js/fixy.js
+#	new file:   js/fixy.sublime-workspace
+#	new file:   js/jquery-1.9.1.js
+#	new file:   js/jquery.mobile-1.3.1.js
+#
+
